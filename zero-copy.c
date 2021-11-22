@@ -5,40 +5,39 @@
 #include <sys/sendfile.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <errno.h>
 
 int main (int argc, char** argv)
 {
 
-  if (argc != 4) {
-    printf("usage: %s <source> <destination> <mode>\n", argv[0]);
+  if (argc != 3) {
+    printf("The number of arguments is not correct\n");
     exit(1);
   }
  
-  const char *src_path=argv[1];
-  const char *dst_path=argv[2];
-  int src;
-  int dst;
   struct stat stat_buf;
+
+  const char *read_path=argv[1];
+  int read_file = open(read_path, O_RDONLY);
+  fstat(read_file, &stat_buf);
+  
+  const char *write_path=argv[2];
+  int write_file = open(write_path, O_WRONLY|O_CREAT, stat_buf.st_mode);
+
   off_t offset = 0;
-  int rc;
-
-
-  src = open(src_path, O_RDONLY);
-  fstat(src, &stat_buf);
-
-  dst = open(dst_path, O_WRONLY|O_CREAT, stat_buf.st_mode);
-
-  rc = sendfile (dst, src, &offset, stat_buf.st_size);
-
-  if (rc != stat_buf.st_size) {
-    fprintf(stderr, "incomplete transfer from sendfile: %d of %d bytes\n",
-            rc,
-            (int)stat_buf.st_size);
+  int zp = sendfile (write_file, read_file, &offset, stat_buf.st_size);
+  
+  if (zp == -1) {
+	      fprintf(stderr, "error transfer from sendfile: %s", strerror(errno));
+	      exit(1);
+  }
+  if (zp != stat_buf.st_size) {
+    fprintf(stderr, "incomplete transfer from sendfile: %d of %d bytes\n",zp,(int)stat_buf.st_size);
     exit(1);
   }
-
-  close(dst);
-  close(src);
+  
+  close(read_file);
+  close(write_file);
 
   return 0;
 }
