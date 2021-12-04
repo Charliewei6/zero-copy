@@ -1,0 +1,36 @@
+This is our first introduction to parallel coding using directive-based coding.
+
+Requirements:
+
+   gcc/g++ 6.1
+   CMake
+
+
+To compile:
+
+   [prompt]: mkdir build
+   [prompt]: cd build
+   [prompt]: cmake ..
+
+
+To run:
+
+   1) Look at the code and see what you think will be outputted to the screen.
+
+   2) Run the code
+   
+     [prompt]: ./[exe_name]
+
+   3) Try changing the number of threads and run again
+
+     [prompt]: OMP_NUM_THREADS=4 ./[exe_name]
+
+   4) Measure time to execute (wallclock)
+
+     [prompt]: time OMP_NUM_THREADS=4 ./[exe_name]
+
+
+To cleanup:
+
+    [prompt] rm -rf build
+
