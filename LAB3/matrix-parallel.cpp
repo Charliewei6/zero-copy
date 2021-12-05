@@ -80,15 +80,19 @@ void createData(int const num_rows, int const num_cols, float* const a, float* c
     int row, col;
 
     srand((unsigned)time(NULL));
-
-    for(int row = 0; row < num_rows; row++) {
-       for(int col = 0; col < num_cols; col++) {
-           int i = col + row * num_cols;
-           a[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-           b[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-           c[i] = 0.0f;
-           ref[i] = a[i] + b[i];
-        }
+     omp_set_num_threads(NUM_THREADS);
+    #pragma omp parallel
+    {
+        #pragma omp for schedule(static)
+        for(int row = 0; row < num_rows; row++) {
+        for(int col = 0; col < num_cols; col++) {
+            int i = col + row * num_cols;
+            a[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            b[i] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            c[i] = 0.0f;
+            ref[i] = a[i] + b[i];
+            }
+            }
     }
 }
 
@@ -98,10 +102,14 @@ void checkSol(int const num_rows, int const num_cols, float const* const a, floa
 
     int i;
     int different = 0;
-
-    for(int i = 0; i < N; i++) {
-        different = (a[i] != b[i]);
-        if(different) break;
+     omp_set_num_threads(NUM_THREADS);
+    #pragma omp parallel
+    {
+        #pragma omp for schedule(static)
+        for(int i = 0; i < N; i++) {
+            different = (a[i] != b[i]);
+            if(different) break;
+        }
     }
 
     if(different)
