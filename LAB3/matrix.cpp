@@ -60,8 +60,7 @@ int main()
     free(c); 
     free(sol);
     double time = (double)(clock() - start);
-    std::cout << std:: endl << "Time in milli second= " << time << std::endl;
-
+    std::cout << std:: endl << "Base line Running Time is " << time << " milli second"<< std::endl;
     return 0;
 }
 

@@ -1,5 +1,5 @@
 /** derived from */
-
+  
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,13 +52,13 @@ int main()
     int    const NUM_ROWS = 2048;
     int    const NUM_COLS = 2048;
     size_t const N_BYTES = NUM_ROWS * NUM_COLS * sizeof(float);
-    clock_t start = clock();
     a   = (float*)malloc(N_BYTES);
     b   = (float*)malloc(N_BYTES);
     c   = (float*)malloc(N_BYTES);
     sol = (float*)malloc(N_BYTES);
 
-    
+        clock_t start = clock();
+
     createData(NUM_ROWS, NUM_COLS, a, b, c, sol);
 
     // c = a + b
@@ -71,7 +71,7 @@ int main()
     free(c); 
     free(sol);
     double time = (double)(clock() - start);
-    std::cout << std:: endl << "Time in milli second= " << time << std::endl;
+    std::cout << std:: endl << "OpenMP Running Time is " << time << " milli second"<< std::endl;
     return 0;
 }
 
