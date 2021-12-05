@@ -45,8 +45,8 @@ void createData(int const num_rows, int const num_cols, int* const a, int* const
     for(int row = 0; row < num_rows; row++) {
        for(int col = 0; col < num_cols; col++) {
            int i = col + row * num_cols;
-           a[i] = rand() % 5000;
-           b[i] = rand() % 5000;
+           a[i] = i;
+           b[i] = i+1;
            sum[i] = a[i] + b[i];
         }
     }
