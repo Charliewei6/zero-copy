@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include<sstream>
 
 // how many threads to run
 #define NUM_THREADS 3
