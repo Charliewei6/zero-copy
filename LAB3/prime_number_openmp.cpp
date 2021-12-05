@@ -57,8 +57,10 @@ void findPrime(int const num_rows, int const num_cols, int const* const sum){
 
     int num = 0;
      omp_set_num_threads(NUM_THREADS);
-    #pragma omp parallel{
-    for(int k = 0; k < N; k++) {
+    #pragma omp parallel
+    {
+    for(int k = 0; k < N; k++) 
+    {
         int i, n;
         bool isPrime = true;
         n = sum[k];
